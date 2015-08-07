@@ -26,10 +26,6 @@ c
 
       procev=0
 
-      write(6,*)
-      write(6,*)' OSCAR to UrQMD converter    (c) Steffen A. Bass 1998'
-      write(6,*)
-
 cccccccc array initializations  ccccccccccccccccc
 
       call sseed(123987)
@@ -168,8 +164,6 @@ c     process the event
       call write_uheader(14)
       call file14out(tstep)
 
-      write(6,*) 'processing event # ',procev
-
 
       goto 1
 
@@ -277,20 +271,20 @@ ccccccccccccccccccccccccccccccccccccccccccccccccccccc
       otime=0.d0
       ttime=0
 
-      write(14,101) aa,version, sigver, laires, ab,iunit
-      write(14,301) ac,pds, Ap, Zp, ad,tds, At, Zt,add       
-      write(14,305) abt,betann,betatar,betapro
-      write(14,304) ae,bimp,bmin,bdist,aee,sigmatot
-      write(14,303) ah,eos,aj,ebeam,al,ecm,am,pbeam
-      write(14,302) af,event,ag,ranseed,ag2,ai,ttime,ak,otime
-      write(14,102) aop,(CTOption(i),CTOdc(i),i=1,15)
-      write(14,102) aop,(CTOption(i),CTOdc(i),i=16,30)
-      write(14,102) aop,(CTOption(i),CTOdc(i),i=31,45)
-      write(14,103) apa,(CTParam(i),CTPdc(i),i=1,12)
-      write(14,103) apa,(CTParam(i),CTPdc(i),i=13,24)
-      write(14,103) apa,(CTParam(i),CTPdc(i),i=25,36)
-      write(14,103) apa,(CTParam(i),CTPdc(i),i=37,48)
-      write(14,306) apav
+      write(*,101) aa,version, sigver, laires, ab,iunit
+      write(*,301) ac,pds, Ap, Zp, ad,tds, At, Zt,add
+      write(*,305) abt,betann,betatar,betapro
+      write(*,304) ae,bimp,bmin,bdist,aee,sigmatot
+      write(*,303) ah,eos,aj,ebeam,al,ecm,am,pbeam
+      write(*,302) af,event,ag,ranseed,ag2,ai,ttime,ak,otime
+      write(*,102) aop,(CTOption(i),CTOdc(i),i=1,15)
+      write(*,102) aop,(CTOption(i),CTOdc(i),i=16,30)
+      write(*,102) aop,(CTOption(i),CTOdc(i),i=31,45)
+      write(*,103) apa,(CTParam(i),CTPdc(i),i=1,12)
+      write(*,103) apa,(CTParam(i),CTPdc(i),i=13,24)
+      write(*,103) apa,(CTParam(i),CTPdc(i),i=25,36)
+      write(*,103) apa,(CTParam(i),CTPdc(i),i=37,48)
+      write(*,306) apav
 c 
       return
 
@@ -313,14 +307,14 @@ c
 
       itotcoll=ctag-dectag
       iinelcoll=itotcoll-NBlColl-NElColl
-      write(14,*) npart,out_time
-      write(14,202) itotcoll,NElColl,iinelcoll,NBlColl,dectag,
+      write(*,*) npart,out_time
+      write(*,202) itotcoll,NElColl,iinelcoll,NBlColl,dectag,
      @     NHardRes,NSoftRes,NDecRes
 
 c now write particle-output
 
       do 31 i=1,npart
-         write(14,210) r0(i),rx(i),ry(i),rz(i),p0(i),
+         write(*,210) r0(i),rx(i),ry(i),rz(i),p0(i),
      @        px(i),py(i),
      @        pz(i),fmass(i),
      @        ityp(i),iso3(i),charge(i),
@@ -373,8 +367,6 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       return
  199  continue
       iret=0
-      write(6,*) 'ERROR/EOF encountered while reading OSCAR fileheader'
-      write(6,*) '   ... terminating  '
       return
 
       end
@@ -410,8 +402,6 @@ c      here now id to ityp/iso3/charge conversion must take place
 
  299  continue
       iret=0
-      write(6,*) 'ERROR/EOF encountered while reading OSCAR event'
-      write(6,*) '   ... terminating  '
       return
 
       end

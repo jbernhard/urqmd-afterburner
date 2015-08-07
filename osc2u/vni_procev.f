@@ -128,8 +128,8 @@ c now fill meson slots
             
 
       if(nbar.ne.npart) then
-         write(6,*) 'bookkeeping error in procev!!!!'
-         write(6,*) 'nbar,nmes,npart ',nbar_old,nbar-nbar_old,npart
+         write(0,*) 'bookkeeping error in procev!!!!'
+         write(0,*) 'nbar,nmes,npart ',nbar_old,nbar-nbar_old,npart
          stop
       endif
 

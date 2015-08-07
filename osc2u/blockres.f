@@ -810,7 +810,7 @@ C####C##1#########2#########3#########4#########5#########6#########7##
       else if(ir.gt.minmes.and.ir.le.maxmes)then
         l=lbm(i,ir)
       else
-        write(6,*)'*** error(flbr) *** i,ir:',i,ir
+        write(0,*)'*** error(flbr) *** i,ir:',i,ir
         stop
       endif
       flbr=l*2 ! angular momentum of decay into ch.i(x2)
@@ -833,7 +833,7 @@ C####C##1#########2#########3#########4#########5#########6#########7##
       else if(ir.gt.minmes.and.ir.le.maxmes)then
         b=branmes(i,ir)
       else
-        write(6,*)'*** error(fbran) *** i,ir:',i,ir
+        write(0,*)'*** error(fbran) *** i,ir:',i,ir
         stop
       endif
       fbran=b ! branching ratio of decay into ch.i(x2)

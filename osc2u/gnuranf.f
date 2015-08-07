@@ -25,7 +25,6 @@ c      end
 
       iseed = -ranseed
       dummy=dble(ran2(iseed))
-      WRITE(6,*)'FIXED SEED = ',ranseed
       RETURN
       END
 
