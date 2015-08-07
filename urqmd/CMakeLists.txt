@@ -51,4 +51,4 @@ add_executable(urqmd
   ${SYSTEM_FILES}
 )
 
-install(TARGETS urqmd DESTINATION bin)
+install(TARGETS urqmd DESTINATION ${PROJECT_NAME})

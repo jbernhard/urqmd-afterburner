@@ -25,4 +25,4 @@ endif()
 add_subdirectory(osc2u)
 add_subdirectory(urqmd)
 
-install(PROGRAMS ${PROJECT_NAME} DESTINATION bin)
+install(PROGRAMS afterburner DESTINATION ${PROJECT_NAME})

@@ -7,4 +7,4 @@ add_executable(osc2u
   gnuranf.f
 )
 
-install(TARGETS osc2u DESTINATION bin)
+install(TARGETS osc2u DESTINATION ${PROJECT_NAME})

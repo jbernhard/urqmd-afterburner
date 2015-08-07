@@ -1,0 +1,38 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then
+  echo "usage: $0 input_file output_file"
+  exit 1
+fi
+
+# read arguments
+inputfile=$1
+outputfile=$2
+
+# run the OSCAR to UrQMD converter
+./osc2u < $inputfile > urqmd_input.dat || exit 1
+
+# create UrQMD config file
+cat > urqmd.conf <<EOF
+# calculate until a late time
+# output only the final timestep
+tim 8000 8000
+
+# read initial state from file 10
+cto 40 2
+
+# write to file 14, suppress all others
+f13
+#f14
+f15
+f16
+f18
+f19
+f20
+
+# end of file
+xxx
+EOF
+
+# run UrQMD
+ftn09=urqmd.conf ftn10=urqmd_input.dat ftn14=$outputfile ./urqmd || exit 1
