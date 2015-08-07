@@ -370,6 +370,7 @@ c final output
          end if
          call osc99_event(1)
          call osc99_eoe
+         call nice_event
       
          mp=mp+npart
          if(ctag.eq.0)then

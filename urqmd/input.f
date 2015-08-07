@@ -21,7 +21,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
       character*3 flag
       character*77 inputstr,file9,fheader,file14,file15,file16,file17
-      character*77 file13,file10,file19,file20
+      character*77 file13,file10,file19,file20,file30
       integer line,proflg,tarflg,impflg,beamflg,index,ival,partid
       integer eosflg,i,io
       real*8 rval,caltim,outtim
@@ -91,6 +91,7 @@ c skip conditions on unit 14, 15, 16 & 18
       bf18=.false.
       bf19=.false.
       bf20=.false.
+      bf30=.false.
       do 111 i=1,numcto
          CTOdc(i)='  '
  111  continue
@@ -388,6 +389,7 @@ c and units 14, 15 for output
       call getenv('ftn17',file17)
       call getenv('ftn19',file19)
       call getenv('ftn20',file20)
+      call getenv('ftn30',file30)
       if (file9(1:4).ne.'    ') then
          OPEN(UNIT=9,FILE=file9,STATUS='OLD',FORM='FORMATTED')
 C peak into input file to find out if cto40 is specified.
@@ -440,6 +442,9 @@ C evolution gracefully.
       endif
       if (file20(1:4).ne.'    ') then
          OPEN(UNIT=20,FILE=file20,STATUS='unknown',FORM='FORMATTED')
+      endif
+      if (file30(1:4).ne.'    ') then
+         OPEN(UNIT=30,FILE=file30,STATUS='unknown',FORM='FORMATTED')
       endif
 c
  99   format(1A3,1A77)
@@ -780,6 +785,9 @@ c ctp: collision term parameter
       elseif (flag.eq.'f20') then
           bf20=.true.
           if (info) write(6,*)'(info) no output on unit 20'
+      elseif (flag.eq.'f30') then
+          bf30=.true.
+          if (info) write(6,*)'(info) no output on unit 30'
       else
          write(6,*)'undefined opcode in input-file on line',line
          stop

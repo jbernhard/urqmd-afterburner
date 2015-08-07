@@ -28,6 +28,7 @@ c
       integer iiunit,isunit, id, pdgid
       integer timestep,itotcoll,iinelcoll
       real*8 sigmatot,ptsigtot,stot,otime
+      real*8 px_,py_,pz_,pmag
       common /outco2/sigmatot
 
 
@@ -906,6 +907,41 @@ c end of event tag for OSCAR 99A format
       if (bf20) return
 
       write(20,996) 0,0
+
+      return
+
+
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+      entry nice_event
+
+c jbernhard's format
+
+      if (bf30) return
+
+
+
+      write (30,955) '# event', event, 'particles', npart
+
+
+ 955  format (a7,1x,i5,2x,a9,1x,i7)
+
+
+ 956  format (i8,2x,i2,2x,4(e12.6,2x))
+
+
+c particle ID, charge, mass, pT, phi, eta
+
+      do 544 i=1,npart
+         id = pdgid(ityp(i), iso3(i))
+         px_ = px(i) + ffermpx(i)
+         py_ = py(i) + ffermpx(i)
+         pz_ = pz(i) + ffermpx(i)
+         pmag = sqrt(px_*px_ + py_*py_ + pz_*pz_)
+         write(30,956) id, charge(i), fmass(i),
+     .        sqrt(px_*px_ + py_*py_), atan2(py_, px_),
+     .        0.5*log((pmag+pz_)/(pmag-pz_))
+ 544  continue
+
 
       return
 

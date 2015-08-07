@@ -21,18 +21,19 @@ tim 8000 8000
 # read initial state from file 10
 cto 40 2
 
-# write to file 14, suppress all others
+# write to file 30, suppress all others
 f13
-#f14
+f14
 f15
 f16
 f18
 f19
 f20
+#f30
 
 # end of file
 xxx
 EOF
 
 # run UrQMD
-ftn09=urqmd.conf ftn10=urqmd_input.dat ftn14=$outputfile ./urqmd || exit 1
+ftn09=urqmd.conf ftn10=urqmd_input.dat ftn30=$outputfile ./urqmd || exit 1

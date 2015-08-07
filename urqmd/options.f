@@ -14,9 +14,9 @@ c...
       integer nstable
       integer stabvec(maxstables)
 
-      logical bf13,bf14,bf15,bf16,bf17,bf18,bf19,bf20,fixedseed
+      logical bf13,bf14,bf15,bf16,bf17,bf18,bf19,bf20,bf30,fixedseed
       common /options/CTOption,CTParam
       common /optstrings/ctodc,ctpdc
       common /loptions/fixedseed,bf13,bf14,bf15,bf16,bf17,bf18,
-     .     bf19,bf20
+     .     bf19,bf20,bf30
       common /stables/nstable,stabvec
