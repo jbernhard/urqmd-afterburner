@@ -6,7 +6,6 @@ else()
 endif()
 
 add_executable(urqmd
-  1fluid.f
   addpart.f
   angdis.f
   anndec.f
@@ -14,9 +13,7 @@ add_executable(urqmd
   blockres.f
   boxprg.f
   cascinit.f
-  CFmax.f90
   coload.f
-  cornelius.f90
   dectim.f
   delpart.f
   detbal.f
@@ -44,7 +41,6 @@ add_executable(urqmd
   siglookup.f
   string.f
   tabinit.f
-  uhmerge.f
   upmerge.f
   whichres.f
   urqmd.f

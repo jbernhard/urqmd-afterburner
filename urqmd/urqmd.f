@@ -39,9 +39,6 @@ c
       real*8 Ekinbar, Ekinmes, ESky2, ESky3, EYuk, ECb, EPau
       common /energies/ Ekinbar, Ekinmes, ESky2, ESky3, EYuk, ECb, EPau
       integer cti1sav,cti2sav
-chp hydro variables
-      real*8 thydro_start,thydro,nucrad
-      logical lhydro
   
 c
 c     numerical/technical initialisation
@@ -63,8 +60,6 @@ c
 
 c     time is the system time at the BEGINNING of every timestep
       time = 0.0
-chp hydro flag, hydro should be called only once
-      lhydro=.true.
 
 c     initialize random number generator
 c     call auto-seed generator only for first event and if no seed was fixed
@@ -85,22 +80,6 @@ cbb if we are reading old events, check the success of the read-in:
       if (CTOption(40).ne.0.and.(.not.success)) then
         exit
       endif
-
-chp hydro switch      
-      if (CToption(45).eq.1)then
-chp hydro start time (nuclei have passed each other)
-chp ebeam is only the kinetic energy 
-chp CTParam(65) is useful for the variation of the start time 
-chp default value is one
-       thydro_start=CTParam(65)*2.d0*nucrad(Ap)*sqrt(2.d0*emnuc/ebeam)
-       write(*,300) 'hydro starts after',thydro_start
-chp lower limit for hydro start time
-       if(thydro_start.lt.CTParam(63)) then
-        thydro_start=CTParam(63)
-        write(6,300) '... extended to',CTParam(63)
-       end if
-      end if
- 300  format(a18,x,f5.2,' fm/c')
 
 c old time if an old fort.14 is used 
       if(CTOption(40).ne.0)time=acttime
@@ -166,24 +145,6 @@ c     get next collision
 
 c     exit collision loop if no collisions are left
             if (k.eq.0) goto 102
-chp call hydro if start time is reached
-            if(CTOption(45).eq.1)then
-           
-             if(cttime(k).gt.thydro_start.and.lhydro)then
-              st=thydro_start-acttime
-              call cascstep(acttime,st)
-chp all particle arrays will be modified by hydro
-              call hydro(thydro_start,thydro)
-              acttime=thydro_start
-              lhydro=.false.
-              if(thydro.gt.1.d-8.or.CTOption(48).eq.1)then
-chp full update of collision table
-              call colload
-                      
-              go to 101
-              end if
-             end if    
-            end if 
 
 c  propagate all particles to next collision time
 c  store actual time in acttime, propagation time st=cttime(k)-acttime
