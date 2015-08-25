@@ -10,7 +10,7 @@ c
 
       integer nmax, nspl
       real*8 hit_sphere
-      parameter (nmax = 40000) ! maximum number of particles
+      parameter (nmax = 100000) ! maximum number of particles
       parameter (nspl = 500)  ! dimension of spline arrays
       parameter (hit_sphere = 8.d0)  ! hard collision cutoff: 251 mbarn
 

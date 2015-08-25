@@ -3,7 +3,7 @@ c
 cdes  This file contains the  uqmd collision tables
 c
       integer ncollmax
-      parameter (ncollmax = 10000) ! maximum number of entries in collision table
+      parameter (ncollmax = 30000) ! maximum number of entries in collision table
       integer nct,actcol,nsav,apt
       real*8 cttime(0:ncollmax),ctsqrts(ncollmax),ctsigtot(ncollmax)
       real*8 ctcolfluc(ncollmax)
