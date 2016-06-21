@@ -138,12 +138,20 @@ c default settings for CTParam and CTOption cccccccccccccccccccccccccccccc
 
 ccccccccccccccccccccccccccccccccccccccccccccccccc
 
-      call read_osc_header(iret)
-      if(iret.eq.0) stop
+      ! set collision parameters (these don't matter)
+      Ap = 208
+      At = 208
+      Zp = 82
+      Zt = 82
+      ebeam = 1380.
+      bimp = 0.
+
+      ! initialize event counter
+      event = 0
 
  1    continue
 
-      call read_osc_event(iret)
+      call read_event(iret)
       if(iret.eq.0) stop
 
 cdebug
@@ -164,6 +172,8 @@ c     process the event
       call write_uheader(14)
       call file14out(tstep)
 
+      ! increment event counter
+      event = event + 1
 
       goto 1
 
@@ -219,13 +229,11 @@ c 103  format(a2,12(e10.4,a2))
  103  format(a2,12(e11.4,a2))
 
 
-csab changed e16.8 to D24.16
 c standard particle information vector
- 201  format(9e16.8,i11,2i3,i9,i5,i4)
-cLHC 201  format(9e24.16,i11,2i3,i9,i5,i4)
+ 201  format(9e24.16,i11,2i3,i9,i5,i4)
 
 c special output for cto40 (restart of old event)
- 210  format(9e16.8,i11,2i3,i9,i5,i10,3e16.8,i8)
+ 210  format(9e24.16,i11,2i3,i9,i5,i10,3e24.16,i8)
 
 c collsision stats for file14
  202  format(8i8)
@@ -326,75 +334,32 @@ c now write particle-output
 c 
       return
       end
+
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-      subroutine read_osc_header(iret)
+      subroutine read_event(iret)
 
       implicit none
       include 'ucoms.f'
 
-      character*12 oscar_tag, file_tag
-      character*8 model_tag, version_tag
-      character*1 cdummy1
-      character*3 cdummy3
-      character*4 reffram
-      integer ntestp,iret
-      
-      iret=1
-
-      read (unit=5,fmt=901,err=199,end=199) oscar_tag
-      read (unit=5,fmt=901,err=199,end=199) file_tag
-
- 901  format (a12)
-
-
-      read (unit=5,fmt=902,err=199,end=199) 
-     &             model_tag, version_tag, cdummy1, Ap, cdummy1, 
-     &             Zp, cdummy3, At, cdummy1, Zt, cdummy1,
-     &             reffram, ebeam, ntestp
-
-      if (reffram .eq. 'eqsp') then
-         CTOption(27)=0
-      elseif (reffram .eq. 'tar') then
-         CTOption(27)=1
-      elseif (reffram .eq. 'pro') then
-         CTOption(27)=2
-      endif
-
-
- 902  format (2(a8,2x),a1,i3,a1,i6,a3,i3,a1,i6,a1,2x,a4,2x,
-     &     e10.4,2x,i8)
-
-      return
- 199  continue
-      iret=0
-      return
-
-      end
-
-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-      subroutine read_osc_event(iret)
-
-      implicit none
-      include 'ucoms.f'
-
-      integer i,j,iret
-      real*8 dummy
+      integer i,iret
 
       iret=1
-      
-      read (unit=5,fmt=903,err=299,end=299) event, npart, bimp, dummy
 
- 903  format (i10,2x,i10,2x,f8.3,2x,f8.3)
+      read (unit=5,fmt=903,err=299,end=299) npart
+
+ 903  format (2x,i10)
 
 c particles
 
       do 99 i=1,npart
-         read(5,904) j, t_ityp(i), 
-     .        t_px(i), t_py(i), t_pz(i), t_p0(i), t_fmass(i),     
-     .        t_rx(i), t_ry(i), t_rz(i), t_r0(i), t_tform(i)
+         read(5,904) t_ityp(i),
+     .        t_r0(i), t_rx(i), t_ry(i), t_rz(i),
+     .        t_p0(i), t_px(i), t_py(i), t_pz(i)
+         t_fmass(i) = sqrt(t_p0(i)**2
+     .        - t_px(i)**2 - t_py(i)**2 - t_pz(i)**2)
  99   continue
 
- 904  format (i10,2x,i10,2x,10(D24.16,2x))
+ 904  format (i10,8e24.16)
 
 c      here now id to ityp/iso3/charge conversion must take place
 

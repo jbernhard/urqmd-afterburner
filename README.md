@@ -27,20 +27,42 @@ Invoke the afterburner with two arguments:
 
     afterburner input_file output_file
 
-where `input_file` is an OSCAR 1997A file containing particle data (presumably produced by a Cooper-Frye hypersurface sampler) and `output_file` is the desired filename for the final particle data.
+where `input_file` contains particle data (presumably produced by a Cooper-Frye hypersurface sampler) in the format described below and `output_file` is the desired filename for the final particle data.
 
-The Fortran parsing in `osc2u` is rather strict, so the OSCAR input file must follow the format exactly.
-The [UrQMD manual](http://urqmd.org/documentation/urqmd-3.4.pdf) specifies the format in tables 12-13 and code listing 8 on pages 31-32.
+### Input format
 
-I have defined a new, simple output format for UrQMD, and set it as the default output format in `afterburner`.
-This format seeks to be easy to parse and contain only the necessary information for computing standard event-by-event observables (charged-particle multiplicity, flow cumulants, etc).
-Each event is preceded by a commented header line with the event number and total number of particles in the event:
+Input files contain particle data for one or more events; multiple events are concatenated together.
+Each event begins with a commented header line
+
+    # nparticles
+
+The first two characters of the line are skipped, and the next 10 are read as an integer.
+The Python format string is `'# {:10d}'`.
+
+After the header line, each particle line has columns
+
+    ID t x y z E px py pz
+
+i.e. the particle's PDG ID, then its position and momentum four-vectors.
+The format is an integer of width 10 followed by 8 floating points in format `24.16e`.
+The Python format string is `('{:10d}' + 8*'{:24.16e}')`.
+
+#### Warning
+
+The input file must be formatted carefully or it will not be correctly parsed.
+The number of particles in the event header must match the actual number of particle lines, and all numbers must follow the expected formats (`10d` for integers and `24.16e` for floats).
+
+### Output format
+
+The default output format is easy to parse and contains only the necessary information for computing standard event-by-event observables (charged-particle multiplicity, flow cumulants, etc).
+
+Similar to the input format, files contain one or more events concatenated together, each beginning with a commented header line and followed by particle lines.
+The header contains the event number and total number of particles in the event:
 
     # event n particles m
 
-Then, each particle line has columns:
+Then, particle lines have columns:
 
-    ID charge mass pT phi eta
+    ID charge pT phi y eta
 
-where `ID` is the PDG Monte Carlo particle ID, `charge` and `mass` are the corresponding properties of the species, `pT` is the magnitude of transverse momentum, `phi` is the azimuthal angle of transverse momentum, and `eta` is the pseudorapidity.
-Multiple events are simply concatenated together.
+where `ID` is the PDG Monte Carlo particle ID, `charge` is the...charge, `pT` is the magnitude of transverse momentum, `phi` is the azimuthal angle of transverse momentum, `y` is the rapidity, and `eta` is the pseudorapidity.
