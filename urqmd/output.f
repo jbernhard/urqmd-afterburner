@@ -912,18 +912,12 @@ c jbernhard's format
 
       if (bf30) return
 
+      ! event header
+ 955  format (a,1x,i5,2x,a,1x,i7)
+      write(30,955) '# event', event, 'particles', npart
 
-
-      write (30,955) '# event', event, 'particles', npart
-
-
- 955  format (a7,1x,i5,2x,a9,1x,i7)
-
-
- 956  format (i10,i3,4es24.16)
-
-
-c particle ID, charge, pT, phi, y, eta
+      ! particle data: ID charge pT phi y eta
+ 956  format (i8,i3,4es24.16)
 
       do 544 i=1,npart
          id = pdgid(ityp(i), iso3(i))
@@ -939,7 +933,6 @@ c particle ID, charge, pT, phi, y, eta
      .        .5*log((p0(i)+pz_)/(p0(i)-pz_)),
      .        .5*log((pmag+pz_)/(pmag-pz_))
  544  continue
-
 
       return
 

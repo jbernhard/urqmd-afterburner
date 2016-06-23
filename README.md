@@ -32,25 +32,19 @@ where `input_file` contains particle data (presumably produced by a Cooper-Frye 
 ### Input format
 
 Input files contain particle data for one or more events; multiple events are concatenated together.
-Each event begins with a commented header line
+Each event must begin with a commented header line containing the number of particles in the event
 
     # nparticles
 
-The first two characters of the line are skipped, and the next 10 are read as an integer.
-The Python format string is `'# {:10d}'`.
-
-After the header line, each particle line has columns
+The first characters of the line is ignored and the next field is read as an integer.
+After the header line, the next `nparticles` lines must contain particle data fields
 
     ID t x y z E px py pz
 
 i.e. the particle's PDG ID, then its position and momentum four-vectors.
-The format is an integer of width 10 followed by 8 floating points in format `24.16e`.
-The Python format string is `('{:10d}' + 8*'{:24.16e}')`.
 
-#### Warning
-
-The input file must be formatted carefully or it will not be correctly parsed.
-The number of particles in the event header must match the actual number of particle lines, and all numbers must follow the expected formats (`10d` for integers and `24.16e` for floats).
+Files are read using Fortran list-directed input so the format is fairly flexible.
+Numbers may be in any valid format, separated by spaces or commas.
 
 ### Output format
 

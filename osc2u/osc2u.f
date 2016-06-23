@@ -341,27 +341,22 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       implicit none
       include 'ucoms.f'
 
+      character comment
       integer i,iret
 
       iret=1
 
-      read (unit=5,fmt=903,err=299,end=299) npart
+      ! number of particles in event
+      read(*,*,err=299,end=299) comment, npart
 
- 903  format (2x,i10)
-
-c particles
-
+      ! particle data
       do 99 i=1,npart
-         read(5,904) t_ityp(i),
+         read(*,*) t_ityp(i),
      .        t_r0(i), t_rx(i), t_ry(i), t_rz(i),
      .        t_p0(i), t_px(i), t_py(i), t_pz(i)
          t_fmass(i) = sqrt(t_p0(i)**2
      .        - t_px(i)**2 - t_py(i)**2 - t_pz(i)**2)
  99   continue
-
- 904  format (i10,8e24.16)
-
-c      here now id to ityp/iso3/charge conversion must take place
 
       return
 
@@ -370,6 +365,3 @@ c      here now id to ityp/iso3/charge conversion must take place
       return
 
       end
-
-
-
