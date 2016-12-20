@@ -9,11 +9,14 @@ fi
 inputfile=$1
 outputfile=$2
 
+# ensure that executables 'osc2u' and 'urqmd' will be found in the PATH
+export PATH="$PATH:$(dirname $0)"
+
 # run the OSCAR to UrQMD converter
-./osc2u < $inputfile > urqmd_input.dat || exit 1
+osc2u < $inputfile > urqmd_input.dat || exit 1
 
 # create UrQMD config file
-cat > urqmd.conf <<EOF
+[[ -f urqmd.conf ]] || cat > urqmd.conf <<EOF
 # calculate until a late time
 # output only the final timestep
 tim 8000 8000
@@ -36,4 +39,4 @@ xxx
 EOF
 
 # run UrQMD
-ftn09=urqmd.conf ftn10=urqmd_input.dat ftn30=$outputfile ./urqmd || exit 1
+ftn09=urqmd.conf ftn10=urqmd_input.dat ftn30=$outputfile urqmd || exit 1
