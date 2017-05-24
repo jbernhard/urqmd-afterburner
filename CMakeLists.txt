@@ -19,7 +19,7 @@ message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
 # Set default architecture flags to optimize for the current system,
 # but don't override user settings.
 if(NOT CMAKE_Fortran_FLAGS MATCHES "-march|-mtune")
-  set(CMAKE_Fortran_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -march=native")
 endif()
 
 add_subdirectory(osc2u)
