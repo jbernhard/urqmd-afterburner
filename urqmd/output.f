@@ -28,7 +28,7 @@ c
       integer iiunit,isunit, id, pdgid
       integer timestep,itotcoll,iinelcoll
       real*8 sigmatot,ptsigtot,stot,otime
-      real*8 px_,py_,pz_,pmag
+      real*8 pTsq,pT,pmag
       common /outco2/sigmatot
 
 
@@ -916,22 +916,24 @@ c jbernhard's format
  955  format (a,1x,i5,2x,a,1x,i7)
       write(30,955) '# event', event, 'particles', npart
 
-      ! particle data: ID charge pT phi y eta
- 956  format (i8,i3,4es24.16)
+      ! particle data: ID charge pT ET mT phi y eta
+ 956  format (i8,i3,6es24.16)
 
       do 544 i=1,npart
          id = pdgid(ityp(i), iso3(i))
-         px_ = px(i) + ffermpx(i)
-         py_ = py(i) + ffermpx(i)
-         pz_ = pz(i) + ffermpx(i)
-         pmag = sqrt(px_*px_ + py_*py_ + pz_*pz_)
+         pTsq = px(i)**2 + py(i)**2
+         pT = sqrt(pTsq)
+         pmag = sqrt(pTsq + pz(i)**2)
+
          write(30,956)
      .        id,
      .        charge(i),
-     .        sqrt(px_*px_ + py_*py_),
-     .        atan2(py_, px_),
-     .        .5*log((p0(i)+pz_)/(p0(i)-pz_)),
-     .        .5*log((pmag+pz_)/(pmag-pz_))
+     .        pT,
+     .        p0(i)*pT/pmag,
+     .        sqrt(fmass(i)**2 + pTsq),
+     .        atan2(py(i), px(i)),
+     .        .5*log((p0(i) + pz(i))/(p0(i) - pz(i))),
+     .        .5*log((pmag + pz(i))/(pmag - pz(i)))
  544  continue
 
       return

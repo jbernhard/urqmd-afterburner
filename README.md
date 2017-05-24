@@ -65,6 +65,15 @@ The header contains the event number and total number of particles in the event:
 
 Then, particle lines have columns:
 
-    ID charge pT phi y eta
+    ID charge pT ET mT phi y eta
 
-where `ID` is the PDG Monte Carlo particle ID, `charge` is the...charge, `pT` is the magnitude of transverse momentum, `phi` is the azimuthal angle of transverse momentum, `y` is the rapidity, and `eta` is the pseudorapidity.
+where
+
+- `ID` is the PDG Monte Carlo particle ID
+- `charge` is the electric charge
+- `pT` is the magnitude of transverse momentum
+- `ET` is the transverse energy (ET = E sin(θ) = E pT/p)
+- `mT` is the transverse mass (mT<sup>2</sup> = m<sup>2</sup> + pT<sup>2</sup>)
+- `phi` is the azimuthal angle of transverse momentum
+- `y` is the rapidity
+- `eta` is the pseudorapidity
